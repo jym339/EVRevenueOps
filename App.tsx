@@ -30,6 +30,7 @@ const translations = {
     hero: {
       badge: "Exclusively for EV Charging Installers",
       h1: "Predictable Installation Volume Built on Automation.",
+      highlight: "Built on Automation",
       p: "We install revenue infrastructure for EV contractors. No vague marketing—just qualified installation opportunities delivered straight to your calendar.",
       ctaPrimary: "Book a Strategy Call",
       ctaSecondary: "Calculate Lost Revenue",
@@ -124,6 +125,7 @@ const translations = {
     hero: {
       badge: "Exclusivement pour les Installateurs de Bornes",
       h1: "Un Volume d'Installations Prévisible grâce à l'Automatisation.",
+      highlight: "l'Automatisation",
       p: "Nous installons une infrastructure de revenus pour les électriciens EV. Pas de marketing vague—juste des opportunités qualifiées sur votre calendrier.",
       ctaPrimary: "Réserver un Appel Stratégique",
       ctaSecondary: "Calculer le Revenu Perdu",
@@ -245,6 +247,18 @@ export default function App() {
     setLostRevenue(calculatedLost * avgJob);
   }, [leads, avgJob]);
 
+  // Handle Localized Heading logic cleanly
+  const renderHeroTitle = () => {
+    const parts = t.hero.h1.split(t.hero.highlight);
+    return (
+      <>
+        {parts[0]}
+        <span className="text-emerald-600 whitespace-nowrap">{t.hero.highlight}</span>
+        {parts[1]}
+      </>
+    );
+  };
+
   return (
     <div className="min-h-screen selection:bg-emerald-100 selection:text-emerald-900">
       {/* Navbar */}
@@ -283,50 +297,55 @@ export default function App() {
       {/* Hero */}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-grid overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center space-x-2 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border border-emerald-100">
-              <span>{t.hero.badge}</span>
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7">
+              <div className="inline-flex items-center space-x-2 bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border border-emerald-100">
+                <span>{t.hero.badge}</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-8">
+                {renderHeroTitle()}
+              </h1>
+              <p className="text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl">
+                {t.hero.p}
+              </p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <button 
+                  onClick={() => scrollToSection('cta')}
+                  className="w-full sm:w-auto bg-emerald-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-emerald-700 transition flex items-center justify-center shadow-lg shadow-emerald-200"
+                >
+                  {t.hero.ctaPrimary} <ArrowRight className="ml-2 h-5 w-5" />
+                </button>
+                <button 
+                  onClick={() => scrollToSection('calculator')}
+                  className="w-full sm:w-auto text-slate-700 font-semibold flex items-center justify-center hover:text-emerald-600 transition"
+                >
+                  <Calculator className="mr-2 h-5 w-5 text-emerald-600" /> {t.hero.ctaSecondary}
+                </button>
+              </div>
             </div>
-            <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-8">
-              {t.hero.h1.split('Built')[0]} <span className="text-emerald-600">{lang === 'en' ? 'Built' : 'Grâce'}</span> {t.hero.h1.split('Built')[1] || (lang === 'fr' ? "à l'Automatisation" : "")}
-            </h1>
-            <p className="text-xl text-slate-600 mb-10 leading-relaxed">
-              {t.hero.p}
-            </p>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
-              <button 
-                onClick={() => scrollToSection('cta')}
-                className="w-full sm:w-auto bg-emerald-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-emerald-700 transition flex items-center justify-center shadow-lg shadow-emerald-200"
-              >
-                {t.hero.ctaPrimary} <ArrowRight className="ml-2 h-5 w-5" />
-              </button>
-              <button 
-                onClick={() => scrollToSection('calculator')}
-                className="w-full sm:w-auto text-slate-700 font-semibold flex items-center justify-center hover:text-emerald-600 transition"
-              >
-                <Calculator className="mr-2 h-5 w-5 text-emerald-600" /> {t.hero.ctaSecondary}
-              </button>
+            
+            <div className="lg:col-span-5 hidden lg:block">
+               <div className="bg-white p-8 rounded-3xl shadow-2xl border border-slate-100 transform rotate-1 relative z-20">
+                  <div className="flex items-center justify-between mb-8">
+                    <h3 className="font-bold text-slate-900 text-lg">{t.hero.dashboardTitle}</h3>
+                    <span className="text-xs bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full font-bold">{t.hero.dashboardStatus}</span>
+                  </div>
+                  <div className="space-y-4">
+                     {t.hero.dashboardData.map((row, idx) => (
+                       <div key={idx} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-emerald-200 transition-colors">
+                          <div className="flex flex-col">
+                            <span className="font-bold text-slate-800">{row.name}</span>
+                            <span className="text-xs text-slate-500 font-medium">{row.status}</span>
+                          </div>
+                          <span className="font-black text-emerald-600">{row.value}</span>
+                       </div>
+                     ))}
+                  </div>
+               </div>
+               {/* Decorative floating element */}
+               <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-emerald-100 rounded-full blur-3xl opacity-60 z-10"></div>
             </div>
           </div>
-        </div>
-        <div className="hidden lg:block absolute top-1/2 right-[2%] -translate-y-1/2 w-[40%]">
-           <div className="bg-white p-6 rounded-2xl shadow-2xl border border-slate-100 transform rotate-1">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="font-bold text-slate-900">{t.hero.dashboardTitle}</h3>
-                <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">{t.hero.dashboardStatus}</span>
-              </div>
-              <div className="space-y-4">
-                 {t.hero.dashboardData.map((row, idx) => (
-                   <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
-                      <div className="flex flex-col text-sm">
-                        <span className="font-semibold">{row.name}</span>
-                        <span className="text-xs text-slate-500">{row.status}</span>
-                      </div>
-                      <span className="font-bold text-emerald-600">{row.value}</span>
-                   </div>
-                 ))}
-              </div>
-           </div>
         </div>
       </section>
 
