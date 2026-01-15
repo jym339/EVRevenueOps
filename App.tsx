@@ -194,7 +194,7 @@ const translations = {
       h2: "Questions Fréquentes",
       items: [
         { q: "Faites-vous de la publicité ?", a: "C'est possible, mais notre priorité est l'infrastructure de revenus pour que chaque lead soit rentable." },
-        { q: "Quels sont les délais ?", a: "Le déploiement prend 10-14 jours. La plupart voient des réservations dès la première semaine." },
+        { q: "Quels sont les délais ?", a: "Le déploiement prend 10-14 days. La plupart voient des réservations dès la première semaine." },
         { q: "Est-ce pour le commercial ?", a: "Les deux. Nous avons des systèmes distincts pour qualifier le résidentiel et le tertiaire." }
       ]
     },
@@ -210,6 +210,8 @@ const translations = {
     }
   }
 };
+
+const CALENDLY_URL = "https://calendly.com/immigreraucanada1/consultation-evrevenueops";
 
 // --- Main App Component ---
 
@@ -233,6 +235,10 @@ export default function App() {
       const offsetPosition = elementPosition - offset;
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
+  };
+
+  const openCalendly = () => {
+    window.open(CALENDLY_URL, '_blank');
   };
 
   // Calculator Logic
@@ -285,7 +291,7 @@ export default function App() {
               <span>{lang.toUpperCase()}</span>
             </button>
             <button 
-              onClick={() => scrollToSection('cta')}
+              onClick={openCalendly}
               className="bg-slate-900 text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-emerald-600 transition shadow-sm"
             >
               {t.nav.cta}
@@ -310,7 +316,7 @@ export default function App() {
               </p>
               <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
                 <button 
-                  onClick={() => scrollToSection('cta')}
+                  onClick={openCalendly}
                   className="w-full sm:w-auto bg-emerald-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-emerald-700 transition flex items-center justify-center shadow-lg shadow-emerald-200"
                 >
                   {t.hero.ctaPrimary} <ArrowRight className="ml-2 h-5 w-5" />
@@ -420,7 +426,7 @@ export default function App() {
                     <p className="text-slate-500 text-sm mt-2 italic">{t.calculator.leakedRevDesc}</p>
                   </div>
                   <button 
-                    onClick={() => scrollToSection('cta')}
+                    onClick={openCalendly}
                     className="w-full bg-emerald-600 py-4 rounded-xl font-bold text-lg hover:bg-emerald-700 transition shadow-lg shadow-emerald-900/20"
                   >
                     {t.calculator.cta}
@@ -580,7 +586,10 @@ export default function App() {
               <strong>{t.finalCta.warning}</strong>
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <button className="bg-emerald-600 text-white px-10 py-5 rounded-xl text-xl font-bold hover:bg-emerald-700 transition flex items-center justify-center">
+              <button 
+                onClick={openCalendly}
+                className="bg-emerald-600 text-white px-10 py-5 rounded-xl text-xl font-bold hover:bg-emerald-700 transition flex items-center justify-center"
+              >
                 {t.finalCta.btn} <PhoneCall className="ml-3 h-5 w-5" />
               </button>
             </div>
